@@ -1,5 +1,62 @@
-@page "/TachindeAPP"
+@page "/Tach"
 
 <h3>Tach in de APP</h3>
 
-Please choose your username here
+
+Chat:
+<div class="chatbox">
+    <ul class="list-group">
+  
+
+@foreach (var message in Messages)
+            {
+                <li class="list-group-item">
+                <span>@message.Date.ToShortTimeString()</span>
+                <span>@message.User</span>
+                <span>@message.Text</span>
+                </li>
+            }
+</ul>
+</div>
+
+<div>
+    <input type="text" @bind-value=NewMessageText @onkeydown="SendMessageOnEnter"/>
+    <button class="btn btn-primary" @onclick="SendMessage">Click me</button>
+</div>
+
+
+@code {
+
+private string NewMessageText {get;set;}
+    private List<Message> Messages = new List<Message>{
+        
+        };
+    private void SendMessage()
+    {
+        if (!string.IsNullOrWhiteSpace(NewMessageText))
+        {
+            Messages.Add(new Message{ Text = NewMessageText, User = "change" });
+            NewMessageText = string.Empty;
+        }
+    }
+
+private void SendMessageOnEnter(KeyboardEventArgs args)
+    {
+        if (args.Key == "Enter")
+        {
+            SendMessage();
+            //StateHasChanged();
+        }
+    }
+
+    public record Message
+    {
+        public DateTime Date { get; set; } = DateTime.UtcNow;
+
+        public int Id { get; init; }
+
+        public string Text { get; set; }
+
+        public string User{ get;set;}
+    }
+}
