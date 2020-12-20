@@ -1,12 +1,13 @@
 @page "/Tach"
 
-<h3>Tach in de APP</h3>
+<h2>Tach in de APP</h2>
 
 
-Chat:
+
 <div class="chatbox">
     <ul class="list-group">
   
+
 
 @foreach (var message in Messages)
             {
@@ -20,22 +21,35 @@ Chat:
 </div>
 
 <div>
+    <input type="text" @bind-value=UserName />
+    <button class="btn btn-primary" @onclick="UserN">Get</button>
+</div>
+
+<div>
     <input type="text" @bind-value=NewMessageText @onkeydown="SendMessageOnEnter"/>
-    <button class="btn btn-primary" @onclick="SendMessage">Click me</button>
+    <button class="btn btn-primary" @onclick="SendMessage">Send</button>
 </div>
 
 
 @code {
-
+private string UserName {get;set;}
 private string NewMessageText {get;set;}
     private List<Message> Messages = new List<Message>{
         
         };
+
+private void UserN()
+
+    {
+       //Messages.Add(new Message{ Text = "UserN" });
+        
+    }
+
     private void SendMessage()
     {
         if (!string.IsNullOrWhiteSpace(NewMessageText))
         {
-            Messages.Add(new Message{ Text = NewMessageText, User = "change" });
+            Messages.Add(new Message{ Text = NewMessageText, User = "UserN" });
             NewMessageText = string.Empty;
         }
     }
@@ -60,3 +74,22 @@ private void SendMessageOnEnter(KeyboardEventArgs args)
         public string User{ get;set;}
     }
 }
+
+
+
+
+
+
+
+<!---
+<EditForm Model=@_login OnValidSubmit="HandleValidSubmit" class="form-signin">
+    
+      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+
+      <label for="inputEmail" class="sr-only">Username</label>
+      <InputText id="inputEmail" class="form-control mb-4" @bind-Value=_login.Username placeholder="Username" required autofocus />
+      
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      
+    </EditForm>
+    -->
