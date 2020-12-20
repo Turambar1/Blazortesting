@@ -1,0 +1,47 @@
+@page "/Thommy"
+@page "/Thommy/{WaitCount:int}"
+@inject NavigationManager NavigationManager
+
+<h1>Hello, Thommy</h1>
+
+Welcome to your new page.
+:-)
+@if(ShowAlert){
+<div class="alert alert-danger" role="alert" >
+  Hier lang ---->
+  <button type="button" class="btn btn-danger" @onclick=NavigateToCounterComponent  >Klick</button>
+</div>
+}else{
+  <div class="spinner-border text-secondary" role="status">
+  <span class="visually-hidden" >@Count </span>
+</div>
+<span >@Remaining</span>
+}
+
+  @code {
+    private bool ShowAlert {get;set; }
+    private int Count = -2;
+
+    private string Remaining{get;set;}
+
+    [Parameter]
+    public int? WaitCount {get;set;}
+    private void NavigateToCounterComponent()
+    {
+        NavigationManager.NavigateTo("Tach");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+      var until = (WaitCount ?? 8);
+      for(int i = 0; i<=until; i++)
+      {
+          await Task.Delay(1000);
+          Count = i;
+          Remaining = (until - i).ToString();
+          StateHasChanged();
+      }
+      
+      ShowAlert = true;
+    }
+}
